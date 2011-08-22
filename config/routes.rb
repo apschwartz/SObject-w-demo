@@ -1,4 +1,18 @@
 Sfplay1::Application.routes.draw do
+  
+  get "sessions/create"
+  get "sessions/pm_task"
+  get "sessions/bom_revision"
+  get "sessions/bom_rev_with_lineitems"
+  get "sessions/bom_rev_update"
+  get "sessions/bom_rev_add"
+  
+  root :to => 'sessions#new'
+  
+  # Match oauth callbacks
+  match '/auth/:provider/callback', :to => 'sessions#create'
+  match '/auth/failure', :to => 'sessions#fail'
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

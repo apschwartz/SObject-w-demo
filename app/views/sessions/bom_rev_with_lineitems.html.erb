@@ -1,0 +1,32 @@
+<h2>Bom Revision: <%=@bomrev.Name %></h2>
+<table>
+	<tr>
+		<td>Revision Letter:</td>
+		<td><%=@bomrev.Revision_Letter__c%></td>
+	</tr>
+	<tr>
+		<td>Revision Purpose:</td>
+		<td><%=@bomrev.Revision_Purpose__c%></td>
+	</tr>
+	<tr>
+		<td>Revision State:</td>
+		<td><%=@bomrev.Revision_State__c%></td>
+	</tr>
+	<tr>
+		<td>Line Items:</td>
+		<td>
+			<table>
+				<% @bomrev.BoM_Line_Items__r.each do |li| %>
+				<tr>
+					<td>
+						<%= li.Line_No__c %>
+					</td>
+					<td>
+						<%= li.Item_Name__c %>
+					</td>
+				</tr>
+				<% end %>
+			</table>
+		</td>
+	</tr>
+</table>

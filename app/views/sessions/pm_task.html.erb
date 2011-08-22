@@ -1,0 +1,19 @@
+<h1>PM-Tasks</h1>
+<table>
+	<% @pmts.each do |pmt| %>
+	<tr>
+		<td>
+			<%= pmt.Name %>
+		</td>
+		<td>
+			<%= pmt.Task_Description__c %>
+		</td>
+		<td>
+			<%= pmt.Bugzilla__c %>
+		</td>
+		<td>
+			<%= pmt.Feature_Description__c %>
+		</td>
+	</tr>
+	<% end %>
+</table>
