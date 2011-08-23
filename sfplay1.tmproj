@@ -26,23 +26,23 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>0</integer>
+				<integer>117</integer>
 				<key>line</key>
-				<integer>34</integer>
+				<integer>50</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>15</integer>
+			<integer>25</integer>
 		</dict>
 		<key>lib/sf.com/SObject.rb</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>42</integer>
+				<integer>73</integer>
 				<key>line</key>
-				<integer>64</integer>
+				<integer>173</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
