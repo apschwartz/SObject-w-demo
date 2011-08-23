@@ -18,13 +18,10 @@ class SessionsController < ApplicationController
   def pm_task
     @pmts = SObject.find('SELECT Id, Name, Task_Description__c, Bugzilla__c, Feature_Description__c from PM_Task__c order by Task_Description__c')
     @pmts.each {|pmt| p pmt}
-    wait = 'here'
   end
   
   def bom_revision
-#debugger
     @bomrev = SObject.find('SELECT Id, Name, Revision_Letter__c, Revision_Purpose__c, Revision_State__c from BoM_Revision__c where Name = \'130-Test-01-A\'')[0]
-    wait = 'here'
   end
   
   def bom_rev_update
@@ -45,9 +42,7 @@ class SessionsController < ApplicationController
   end
   
   def bom_rev_with_lineitems
-debugger
     @bomrev = SObject.find('SELECT Id, Name, Revision_Letter__c, Revision_Purpose__c, Revision_State__c, (Select Id, Line_No__c, Item_Name__c from BoM_Line_Items__r order by Line_No__c) from BoM_Revision__c where Name = \'130-Test-01-A\'')[0]
-    wait = 'here'
   end
   
   def contact_create_and_delete
