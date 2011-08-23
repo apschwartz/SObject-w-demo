@@ -1,22 +1,28 @@
+# This class allows access to and manipulation of SF.com objects as ruby objects.
+#
+# Author:: Andy Schwartz
+# Copyright:: Copyright (c) 2011 Andrew Schwartz
+# License:: ALL RIGHTS RESERVED.  Will decide on a less-restrictive license at a later date.
+
+
 require 'rubygems'
 require 'httparty'
 
 class SObject
   include HTTParty
-  #doesn't seem to pick up env variable correctly if I set it here
-  #headers 'Authorization' => "OAuth #{ENV['sfdc_token']}"
   format :json
-  # debug_output $stderr
   
-  attr_accessor :fields, :object_name, :Id
+  attr_reader :fields
   
   def initialize(object_name = nil)
+    @reserved_fields = ['fields', 'object_name', 'reserved_fields']
     @object_name = object_name
     @fields = Array.new
     @updated_fields = Array.new
     @Id = nil
   end
 
+  # Creates a new SObject using a SOQL search, specified as the +select+ parameter to this class-level method.
   def self.find(select)
     SObject.set_headers
     x = get(SObject.root_url+"/query/?q=#{CGI::escape(select)}")
@@ -33,7 +39,7 @@ class SObject
     result_object = SObject.new
     query_result.each do |k,v|
       if k == 'attributes'
-        result_object.object_name = v["type"]
+        result_object.instance_variable_set "@object_name", v["type"]
         next
       end
       result_object.fields << k
@@ -67,16 +73,29 @@ class SObject
       response = self.class.post(SObject.root_url+"/sobjects/#{@object_name}/#{@Id}?_HttpMethod=PATCH", options)
       raise response.parsed_response[0]['message'] if response.code.to_i > 299
     end
-    wait = 'here'
+    nil
   end
 
+  def delete
+    self.class.headers 'Authorization' => "OAuth #{ENV['sfdc_token']}"
+    self.class.headers 'Content-Type' => "application/json"
+    response = self.class.delete(SObject.root_url+"/sobjects/#{@object_name}/#{@Id}")
+    raise response.parsed_response[0]['message'] if response.code.to_i > 299
+    nil
+  end
  
   def method_missing(sym, *args)
     if sym =~ /^(\w+)=$/
-      instance_variable_set "@#{$1}", args[0]
-      if !@updated_fields.include?("@#{$1}")
+      if @reserved_fields.include?("#{$1}")
+        throw "Field '#{$1}' cannot be modified."
+      end
+      if !@updated_fields.include?("#{$1}")
         @updated_fields << "#{$1}"
       end
+      if !@fields.include?("#{$1}")
+        @fields << "#{$1}"
+      end
+      instance_variable_set "@#{$1}", args[0]
     else
       instance_variable_get "@#{sym}"
     end

@@ -11,7 +11,7 @@ class SessionsController < ApplicationController
     ENV['sfdc_instance_url'] = request.env['omniauth.auth']['instance_url']
     # render :text => request.env['omniauth.auth'].inspect
     # render :text => Accounts.get_first_hundred.inspect
-    redirect_to :controller => 'sessions', :action => 'bom_rev_add'
+    redirect_to :controller => 'sessions', :action => 'bom_rev_with_lineitems'
   end
   def fail
     render :text =>  request.env["omniauth.auth"].to_yaml
@@ -47,9 +47,19 @@ class SessionsController < ApplicationController
   end
   
   def bom_rev_with_lineitems
-#debugger
-    @bomrev = SObject.find('SELECT Id, Name, Revision_Letter__c, Revision_Purpose__c, Revision_State__c, (Select Line_No__c, Item_Name__c from BoM_Line_Items__r order by Line_No__c) from BoM_Revision__c where Name = \'130-Test-01-A\'')[0]
+debugger
+    @bomrev = SObject.find('SELECT Id, Name, Revision_Letter__c, Revision_Purpose__c, Revision_State__c, (Select Id, Line_No__c, Item_Name__c from BoM_Line_Items__r order by Line_No__c) from BoM_Revision__c where Name = \'130-Test-01-A\'')[0]
     wait = 'here'
   end
+  
+  def contact_create_and_delete
+    contact = SObject.new('contact')
+    contact.FirstName = 'Test'
+    contact.LastName = 'contact_create_and_delete'
+    contact.Phone = '111-222-3333'
+    contact.save
+    contact.delete
+  end
+    
 
 end

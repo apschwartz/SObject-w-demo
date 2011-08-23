@@ -6,6 +6,7 @@ Sfplay1::Application.routes.draw do
   get "sessions/bom_rev_with_lineitems"
   get "sessions/bom_rev_update"
   get "sessions/bom_rev_add"
+  get "sessions/contact_create_and_delete"
   
   root :to => 'sessions#new'
   
