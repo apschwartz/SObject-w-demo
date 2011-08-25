@@ -9,4 +9,4 @@ doc/
 .project
 .DS_Store
 lib/certs
-config/
+# config/initializers/omniauth.rb
