@@ -22,7 +22,7 @@ class SessionsController < ApplicationController
     account = SObject.new('Account')
     account.Name = 'My unit test account'
     account.Description = 'My test account'
-    account.Type = 'Other'
+#    account.Type = 'Other'
     account.save              # Saves account and sets account.Id
 
     # Verify that worked
