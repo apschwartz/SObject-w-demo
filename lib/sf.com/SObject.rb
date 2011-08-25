@@ -14,9 +14,8 @@ require 'httparty'
 # - Does not use the Salesforce <tt><b>Describe</b></tt> function to learn the allowed fields of an object.  
 #   If undefined fields are attempted to be set, an error will be generated from Salesforce when the object is saved.
 #
-# Author:::    Andy Schwartz
+# Author:::    Andy Schwartz (aschwartz@edgewaternetworks.com and andy-sf@schegg.org)
 # Copyright::: Copyright (c) 2011 Andrew Schwartz
-# License:::   ALL RIGHTS RESERVED.  Will decide on a less-restrictive license at a later date.
 #
 # == Usage Examples
 #
@@ -69,8 +68,8 @@ class SObject
   include HTTParty
   format :json
   
-  # Lists all retrieved and/or set fields in this instance of an SObject.  A poor man's Describe function.  
-  attr_reader :fields
+  # Lists all retrieved and/or set fields in this instance of an SObject.  A (very) poor man's Describe function.  
+  attr_reader :fields #:nodoc:#
   
   # Create a new, empty SObject.  Must provide the object's name as known to the SF.com API.
   #
