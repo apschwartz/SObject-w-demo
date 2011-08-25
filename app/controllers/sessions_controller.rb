@@ -22,7 +22,6 @@ class SessionsController < ApplicationController
     account = SObject.new('Account')
     account.Name = 'My unit test account'
     account.Description = 'My test account'
-#    account.Type = 'Other'
     account.save              # Saves account and sets account.Id
 
     # Verify that worked
@@ -40,7 +39,6 @@ class SessionsController < ApplicationController
                                         account3.NumberOfEmployees != 1)
                                         
     # Let's create a couple of contacts
-    contacts = Array.new
     contact1 = SObject.new('Contact')
     contact1.LastName = 'Schwartz'
     contact1.FirstName = 'Andy'
