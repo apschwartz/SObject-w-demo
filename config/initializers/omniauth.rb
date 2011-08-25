@@ -14,6 +14,7 @@ end
 
 
 Rails.application.config.middleware.use OmniAuth::Builder do
-  
+  # Store your SF.com OAuth2 Consumer Key in the file lib/certs/oauth2_consumer_key
+  # Store your SF.com OAuth2 Consumer Secret in the file lib/certs/oauth2_consumer_secret
   provider :forcedotcom, File.open("lib/certs/oauth2_consumer_key").read, File.open("lib/certs/oauth2_consumer_secret").read
 end
