@@ -14,5 +14,5 @@ end
 
 
 Rails.application.config.middleware.use OmniAuth::Builder do
-  provider :forcedotcom, '3MVG9yZ.WNe6byQDEdYg3XfSjO2cWLPnmAqiwo_lbHWu5cs5_gwPAWPzV1tP_aKkFFJUJouWdFCI_aVXcMq5W', '8357630956922856456'
+  provider :forcedotcom, '[add your consumer key]', '[add your consumer secret]'
 end
