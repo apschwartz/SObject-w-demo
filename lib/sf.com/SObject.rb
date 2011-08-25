@@ -3,11 +3,16 @@ require 'httparty'
 
 # Provides access to, and manipulation of, Salesforce.com objects as ruby objects.
 #
-# This integration is not to the level of a Rails [ActiveRecord] object (to say the least), but does provide an easy ability to 
-# query, create, update and delete SF objects.  
+# This integration provides an easy ability to query, create, update and delete SF objects from Ruby.  
+# SF object field names are referenced directly as method names, providing a similar look-and-feel to Apex.
+# Example:
+#   puts my_contact.FirstName
+#   my_contact.LastName = "schwartz"
 #
-# The current implementation does not use the Salesforce <tt><b>Describe</b></tt> function to learn the allowed fields of an object.  Instead,
-# if undefined fields are attempted to be set, an error will be generated from Salesforce when the object is saved.
+# Properly setting expecations, this class:
+# - Does not create a Rails ActiveRecord object for Salesforce.
+# - Does not use the Salesforce <tt><b>Describe</b></tt> function to learn the allowed fields of an object.  
+#   If undefined fields are attempted to be set, an error will be generated from Salesforce when the object is saved.
 #
 # Author:::    Andy Schwartz
 # Copyright::: Copyright (c) 2011 Andrew Schwartz
@@ -15,14 +20,14 @@ require 'httparty'
 #
 # == Usage Examples
 #
-# 1) <b>Create a new SObject and write it out to SF:</b>
+# 1) <b>Create a new SObject and write it out to Salesforce:</b>
 #   my_contact = SObject.new('Contact')
 #   my_contact.LastName = "Schwartz"
 #   my_contact.FirtName = "Andrew"
 #   my_contact.Email = "andy-salesforce@schegg.org"
 #   my_contact.save
 #
-# 2) <b>Retrieve one or more objects via a SoQL query:</b>
+# 2) <b>Retrieve one or more objects via a SOQL query:</b>
 #   contacts = SObject.find("select Id, FirstName, LastName, Phone from Contact where Account.Name = 'Acme'")
 #   contacts.each { |c| puts "#{c.FirstName} #{c.LastName} #{c.Phone}" }
 #
@@ -34,11 +39,22 @@ require 'httparty'
 #   my_contact.save
 #
 # 2b) <b>Retrieval of an object with related objects is also supported.  The related objects are returned as nested SObjects.  For example:</b>
-#   my_Accounts_with_Contacts = SObject.find("select Id, Name, Website, (select Id, Name, Phone from Contacts limit 10) from Account limit 10")
+#   my_Accounts_with_Contacts = SObject.find(%"select Id, 
+#                                                     Name, 
+#                                                     Website, 
+#                                                     (select Id, 
+#                                                             Name, 
+#                                                             Phone 
+#                                                      from Contacts 
+#                                                      limit 10) 
+#                                              from Account 
+#                                              limit 10")
 #   my_Accounts_with_Contacts.each do |account|
 #     puts account.Name + " -- #{account.Website}"
-#     account.Contacts do |contact|
-#       puts "  " + contact.Name + " - " + contact.Phone
+#     if account.Contacts != nil
+#       account.Contacts.each do |contact|
+#         puts "  " + contact.Name + " - " + contact.Phone.to_s
+#       end
 #     end
 #   end
 #
@@ -69,7 +85,7 @@ class SObject
     @Id = nil
   end
 
-  # Creates a new SObject using a SOQL search, specified as the +soql+ parameter to this class-level method.
+  # Creates a new SObject using a SOQL search, specified as a string parameter to this class-level method.
   def self.find(soql)
     SObject.set_headers
     x = get(SObject.root_url+"/query/?q=#{CGI::escape(soql)}")
@@ -115,7 +131,7 @@ class SObject
     nil
   end
  
-  # This is a public method must is never called directly.  Allows access to SObject fields by just specifying the field name
+  # This is a public method but is never called directly.  Allows access to SObject fields by just specifying the field name
   # as a method name.
   #
   # Example:
