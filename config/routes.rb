@@ -1,12 +1,5 @@
 Sfplay1::Application.routes.draw do
   
-  get "sessions/create"
-  get "sessions/pm_task"
-  get "sessions/bom_revision"
-  get "sessions/bom_rev_with_lineitems"
-  get "sessions/bom_rev_update"
-  get "sessions/bom_rev_add"
-  get "sessions/contact_create_and_delete"
   get "sessions/example"
   
   root :to => 'sessions#new'
